@@ -49,12 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 switch(event.getAction()){
                     case (MotionEvent.ACTION_DOWN):
                         Log.d("Touch", "Action was down");
+                        changeBackgroundColour(event);
                         return true;
                     case (MotionEvent.ACTION_UP):
                         Log.d("Touch", "Action was up");
+                        changeBackgroundColour(event);
                         return true;
                     case (MotionEvent.ACTION_MOVE):
                         Log.d("Touch", "Action was move");
+                        changeBackgroundColour(event);
                         return true;
                     default: return MainActivity.super.onTouchEvent(event);
 
@@ -63,12 +66,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY){
-        hsv[0] = (float) (Math.random() * 360);
-        hsv[1] = (float) Math.random();
-        hsv[2] = (float) Math.random();
+    public void changeBackgroundColour(MotionEvent event){
+        float eventX = event.getX();
+        float eventY = event.getY();
+        float height = layout.getHeight();
+        float width = layout.getWidth();
+        hsv[0] = eventY / height * 360;
+        hsv[1] = eventX / width + 0.1f;
+
         layout.setBackgroundColor(Color.HSVToColor(hsv));
-        return false;
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event){
@@ -83,17 +89,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return false;
-    }
-
-    public void changeBackgroundColour(MotionEvent event){
-        float eventX = event.getX();
-        float eventY = event.getY();
-        float height = layout.getHeight();
-        float width = layout.getWidth();
-        hsv[0] = eventY / height * 360;
-        hsv[1] = eventX / width + 0.1f;
-
-        layout.setBackgroundColor(Color.HSVToColor(hsv));
     }
 
     public void copyText(){
