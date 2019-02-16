@@ -1,9 +1,12 @@
 package com.example.admin.myapplication;
 
+import android.gesture.Gesture;
 import android.graphics.Color;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,7 +19,7 @@ import android.widget.Toast;
 import static com.example.admin.myapplication.Volume.DOWN;
 import static com.example.admin.myapplication.Volume.UP;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     float[] hsv = new float[3];
 
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     EditText input;
     LinearLayout layout;
     TextView tv;
+    private GestureDetectorCompat mDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         input = (EditText)findViewById(R.id.EditText);
         layout = (LinearLayout) findViewById(R.id.Linearlayout);
         tv = (TextView)findViewById(R.id.TextView);
+
+        mDetector = new GestureDetectorCompat(this,this);
+        mDetector.setOnDoubleTapListener(this);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         switch(event.getAction()){
             case (MotionEvent.ACTION_DOWN):
                 Log.d("Touch", "Action was DOWN");
-                layout.setBackgroundColor(Color.RED);
+                // layout.setBackgroundColor(Color.RED);
                 return true;
             case (MotionEvent.ACTION_MOVE):
                 Log.d("Touch","Action was MOVE");
@@ -116,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case (MotionEvent.ACTION_UP):
                 Log.d("Touch","Action was UP");
-                layout.setBackgroundColor(Color.GREEN);
+                // layout.setBackgroundColor(Color.GREEN);
                 return true;
             default: return super.onTouchEvent(event);
         }
@@ -139,6 +146,54 @@ public class MainActivity extends AppCompatActivity {
                 return false;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY){
+        hsv[0] = (float)(Math.random() * 360); //random hue
+        hsv[1] = (float) Math.random(); // random saturation
+        hsv[2] = (float) Math.random(); // random value/lightness
+        layout.setBackgroundColor(Color.HSVToColor(hsv));
+        return false;
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTap(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onDoubleTapEvent(MotionEvent e) {
         return false;
     }
 }
